@@ -3,28 +3,41 @@ package com.lulu.openfire.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jivesoftware.openfire.pep.PEPServiceManager;
+import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.pubsub.Node;
-import org.jivesoftware.openfire.pubsub.PubSubService;
+import org.jivesoftware.openfire.pubsub.NodeSubscription;
+import org.jivesoftware.openfire.pubsub.PubSubModule;
 
 public class PubSubManager {
-	private PubSubService pubSubService = null;
+	private PubSubModule pubSubModule = null;
 	private static PubSubManager instance = null;
 	
-	private PubSubManager(String adminJid){
-		pubSubService = new PEPServiceManager().create(new org.xmpp.packet.JID(adminJid));
+	private PubSubManager(){
+		pubSubModule = XMPPServer.getInstance().getPubSubModule();
 	}
 	
-	public static PubSubManager getInstance(String adminJid){
+	public static PubSubManager getInstance(){
 		if(instance == null){			
-			instance = new PubSubManager(adminJid);
+			instance = new PubSubManager();
 		}
 		return instance;
 	}
 	
 	public List<Node> getToptics(){
 		List<Node> list = new ArrayList<Node>();
-		list.addAll(pubSubService.getNodes());
+		list.addAll(pubSubModule.getNodes());
 		return list;
+	}
+	
+	public List<NodeSubscription> getTopticSubscribers(String topicId){
+		List<NodeSubscription> list = new ArrayList<NodeSubscription>();
+		Node node = pubSubModule.getNode(topicId);
+		list.addAll(node.getSubscriptions());
+		return list;
+	}
+	
+	public boolean removeTopic(String topicId){
+		Node node = pubSubModule.getNode(topicId);
+		return node.delete();
 	}
 }
