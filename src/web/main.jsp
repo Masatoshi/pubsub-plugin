@@ -57,7 +57,7 @@
 <div id="topic-list">
 	<table border="1">
 		<thead>
-			<tr><td>NodeId</td><td>Creator</td><td>CreationDate</td><td>Subscriptions</td><td>Action</td></tr>
+			<tr><td>NodeId</td><td>Creator</td><td>CreationDate</td><td>Subscriptions</td><td>PublisherModel</td><td>Action</td></tr>
 		</thead>
 		<tbody>
 	
@@ -74,6 +74,7 @@
 		<td><%= n.getCreator()%></td>
 		<td><%= sdf.format(n.getCreationDate()) %></td>
 		<td><%= n.getSubscriptions().size() %></td>
+		<td><%= n.getPublisherModel().getName() %></td>
 		<td><input type="button" value="remove" onclick='removeTopic(<%= n.getNodeID()%>)'/></td>
 	</tr>
 <%
