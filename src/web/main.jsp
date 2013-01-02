@@ -70,12 +70,12 @@
 		}
 %>
 	<tr>
-		<td><a href="javascript:void(0)" onclick='showSubscribers(<%= n.getNodeID()%>)'><%= n.getNodeID()%></a></td>
+		<td><a href="javascript:void(0)" onclick='showSubscribers("<%= n.getNodeID()%>")'><%= n.getNodeID()%></a></td>
 		<td><%= n.getCreator()%></td>
 		<td><%= sdf.format(n.getCreationDate()) %></td>
 		<td><%= n.getSubscriptions().size() %></td>
 		<td><%= n.getPublisherModel().getName() %></td>
-		<td><input type="button" value="remove" onclick='removeTopic(<%= n.getNodeID()%>)'/></td>
+		<td><input type="button" value="remove" onclick='removeTopic("<%= n.getNodeID()%>")'/></td>
 	</tr>
 <%
 	}
