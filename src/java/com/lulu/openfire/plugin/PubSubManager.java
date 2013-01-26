@@ -40,4 +40,9 @@ public class PubSubManager {
 		Node node = pubSubModule.getNode(topicId);
 		return node.delete();
 	}
+	
+	public Node getTopic(String topicId){
+		Node node = pubSubModule.getNode(topicId);
+		return node;
+	}
 }

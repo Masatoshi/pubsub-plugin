@@ -42,13 +42,30 @@
 		}, function(result){
 			$('#subscriber-body').empty();
 			for(var i = 0; i < result.length; i++){
-				$('#subscriber-body').append(createSubscriberNode(result[i]));	
+				$('#subscriber-body').append(createSubscriberNode(topicId, result[i]));	
 			}						
 		},'json');
 	}
 	
-	function createSubscriberNode(data){
-		return $('<tr><td>' + data.jid + '</td><td><input type="button" valut="remove"/></td>');
+	function createSubscriberNode(topicId, nodesub){
+		var $btn = $('<input type="button" value="remove"/>'),
+			$tr = $('<tr></tr>'),
+			$id = $('<td>' + nodesub.jid + '</td>'),
+			$action = $('<td></td>');
+		
+		$btn.click(function(){
+			$.get('doaction',{
+				topicId: topicId,
+				action: 'removeSubscriber',
+				jid: nodesub.jid
+			}, function(result){
+				showSubscribers(topicId);							
+			});
+		});
+		
+		$action.append($btn);
+		$tr.append($id).append($action);
+		return $tr;
 	}
 </script>
 </head>

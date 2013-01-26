@@ -9,10 +9,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 
+import org.jivesoftware.openfire.pubsub.Node;
 import org.jivesoftware.openfire.pubsub.NodeSubscription;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmpp.packet.JID;
 
 public class PubSubActionServlet extends HttpServlet {
 	
@@ -39,6 +41,8 @@ public class PubSubActionServlet extends HttpServlet {
 			result = removeTopic(req.getParameter("topicId")) + "";
 		}else if(action.equals("getSubscribers")){
 			result = getSubscribers(req.getParameter("topicId"));			
+		}else if(action.equals("removeSubscriber")){
+			result = removeSubscriber(req.getParameter("topicId"), req.getParameter("jid")) + "";			
 		}
 		
 		resp.getWriter().write(result);
@@ -62,6 +66,14 @@ public class PubSubActionServlet extends HttpServlet {
 			}
 		}		
 		return array.toString();
+	}
+	
+	private boolean removeSubscriber(String topicId, String jid){
+		Node topic = PubSubManager.getInstance().getTopic(topicId);
+		JID jID= new JID(jid);
+		NodeSubscription nodesub = topic.getSubscription(jID);
+		topic.cancelSubscription(nodesub);
+		return true;
 	}
 
 }
